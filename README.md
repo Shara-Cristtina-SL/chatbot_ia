@@ -15,12 +15,6 @@ Levar o conhecimento científico de forma acessível, divertida e interativa par
 
 ---
 
-## 📸 Captura de tela
-
-![Prof. Newton Chatbot](screenshot.png) <!-- Você pode adicionar uma imagem real aqui depois -->
-
----
-
 ## 🚀 Funcionalidades
 
 - Interface interativa estilo “quadro negro”
