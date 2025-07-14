@@ -41,3 +41,8 @@ Levar o conhecimento científico de forma acessível, divertida e interativa par
 ```bash
 git clone https://github.com/seu-usuario/prof-newton-chatbot.git
 cd prof-newton-chatbot
+```
+---
+Insira sua chave da API Gemini no arquivo script.js:
+
+const API_KEY = 'SUA_CHAVE_DA_API_AQUI';
