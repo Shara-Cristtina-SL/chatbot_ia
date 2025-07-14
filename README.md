@@ -1,6 +1,6 @@
 # 🧪 Prof. Newton - Chatbot de Ciências
 
-Bem-vindo ao **Prof. Newton**, um chatbot educacional desenvolvido com HTML, CSS, JavaScript e integração com o modelo **Gemini 1.5 Flash** da Google. Ele responde perguntas de **física, química e biologia** com linguagem clara e didática — como um verdadeiro professor do ensino médio.
+Bem-vindo ao **Prof. Newton**, um chatbot educacional desenvolvido com HTML, CSS, JavaScript e integração com o modelo **Gemini Pro Vision** da Google, capaz de analisar imagens. Ele responde perguntas de **física, química e biologia** com linguagem clara e didática — como um verdadeiro professor do ensino médio.
 
 ---
 
