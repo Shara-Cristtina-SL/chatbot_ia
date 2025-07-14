@@ -43,6 +43,6 @@ git clone https://github.com/seu-usuario/prof-newton-chatbot.git
 cd prof-newton-chatbot
 ```
 ---
-Insira sua chave da API Gemini no arquivo script.js:
+2. Insira sua chave da API Gemini no arquivo script.js:
 
 const API_KEY = 'SUA_CHAVE_DA_API_AQUI';
