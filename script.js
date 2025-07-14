@@ -1,7 +1,9 @@
-const API_KEY = 'SUA_CHAVE_DA_API_AQUI';
+const API_KEY = 'SUA_CHAVE_DA_API_AQUI'; // Substitua pela sua chave da API Gemini
+
 const chatBox = document.getElementById('chat-box');
 const chatForm = document.getElementById('chat-form');
 const userInput = document.getElementById('user-input');
+const imageInput = document.getElementById('image-input');
 
 // Cria botão de parar fala global
 const stopButton = document.createElement('button');
@@ -13,23 +15,38 @@ chatBox.after(stopButton);
 
 chatForm.addEventListener('submit', async (e) => {
   e.preventDefault();
+
   const question = userInput.value.trim();
-  if (!question) return;
+  const imageFile = imageInput.files[0];
 
-  addMessage('user', question);
+  if (!question && !imageFile) return;
+
+  addMessage('user', question || '[Imagem enviada]');
   userInput.value = '';
+  imageInput.value = '';
 
-  const prompt = `Você é o Prof. Newton, um professor experiente e paciente que explica ciências (física, química e biologia) para alunos do ensino médio. Responda de forma didática e clara, usando exemplos simples. Pergunta do aluno: ${question}`;
+  let parts = [];
+  if (question) {
+    parts.push({ text: `Você é o Prof. Newton, um professor de ciências. Pergunta: ${question}` });
+  }
+
+  if (imageFile) {
+    const base64 = await toBase64(imageFile);
+    parts.push({
+      inlineData: {
+        mimeType: imageFile.type,
+        data: base64.split(',')[1]
+      }
+    });
+  }
 
   try {
     const response = await fetch(
-      `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash-latest:generateContent?key=${API_KEY}`,
+      `https://generativelanguage.googleapis.com/v1beta/models/gemini-pro-vision:generateContent?key=${API_KEY}`,
       {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          contents: [{ role: 'user', parts: [{ text: prompt }] }]
-        })
+        body: JSON.stringify({ contents: [{ role: 'user', parts }] })
       }
     );
 
@@ -37,7 +54,7 @@ chatForm.addEventListener('submit', async (e) => {
       ? (await response.json()).candidates?.[0]?.content?.parts?.[0]?.text
       : null;
 
-    reply = (reply || "Hmm... não consegui explicar isso agora.").replace(/\*/g, '');
+    reply = (reply || "Hmm... não consegui analisar isso agora.").replace(/\*/g, '');
 
     addMessage('bot', reply, true);
   } catch (error) {
@@ -45,6 +62,15 @@ chatForm.addEventListener('submit', async (e) => {
     console.error(error);
   }
 });
+
+function toBase64(file) {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.onload = () => resolve(reader.result);
+    reader.onerror = reject;
+    reader.readAsDataURL(file);
+  });
+}
 
 function addMessage(role, text, speakable = false) {
   const div = document.createElement('div');
@@ -73,7 +99,7 @@ function addMessage(role, text, speakable = false) {
 }
 
 function speak(text) {
-  speechSynthesis.cancel(); // Interrompe qualquer fala anterior
+  speechSynthesis.cancel();
 
   const utterance = new SpeechSynthesisUtterance(text);
   utterance.lang = 'pt-BR';
